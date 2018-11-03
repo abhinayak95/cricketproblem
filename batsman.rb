@@ -5,6 +5,7 @@ class Batsman
     @probability = probability
     @runs = 0
     @balls_faced = 0
+    @is_out = false
   end
   def add_runs(runs)
     @runs += runs
@@ -15,9 +16,15 @@ class Batsman
     @balls_faced += 1
   end
   def get_probability()
-    return @probability
+    return @probability.get_probability()
   end
   def get_scorecard
-    return "#{runs} #{balls_faced}"
+    if @is_out
+      return "#{runs} (#{balls_faced} balls)"
+    elsif @balls_faced == 0
+      return "DNB"
+    else
+      return "#{runs}* (#{balls_faced} balls)"
+    end
   end
 end

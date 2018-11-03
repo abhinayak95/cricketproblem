@@ -1,30 +1,24 @@
 require_relative "batsman.rb"
+require_relative "probability.rb"
+require_relative "scorecard.rb"
+require_relative "weighted_random_generator.rb"
 
-batsman1 = Batsman.new('Kirat Boli', {0 => 5, 1 => 30, 2 => 25, 3 => 10, 4 => 15, 5 => 1, 6 => 9, 7 => 5})
-batsman2 = Batsman.new('NS Nodhi', {0 => 10, 1 => 40, 2 => 20, 3 => 5, 4 => 10, 5 => 1, 6 => 4, 7 => 10})
-batsman3 = Batsman.new('R Rumrah', {0 => 20, 1 => 30, 2 => 15, 3 => 5, 4 => 5, 5 => 1, 6 => 4, 7 => 20})
-batsman4 = Batsman.new('Shashi Henra', {0 => 30, 1 => 25, 2 => 10, 3 => 0, 4 => 5, 5 => 1, 6 => 4, 7 => 30})
+scorecard = Scorecard.new(24, 40, 3)
 
-batsmen = [batsman1, batsman2, batsman3, batsman4]
-next_bastman = 2
-playing_batsmen = [batsman1, batsman2]
+random_generator = RandomGenerator.new()
+
+batsman1 = Batsman.new('Kirat Boli', Probability.new(5, 30, 25, 10, 15, 1, 9, 5))
+batsman2 = Batsman.new('NS Nodhi', Probability.new(10, 40, 20, 5, 10, 1, 4, 10))
+batsman3 = Batsman.new('R Rumrah', Probability.new(20, 30, 15, 5, 5, 1, 4, 20))
+batsman4 = Batsman.new('Shashi Henra', Probability.new(30, 25, 10, 0, 5, 1, 4, 30))
+
+
+scorecard.batsmen_order([batsman1, batsman2, batsman3, batsman4].each)
+playing_batsmen = scorecard.get_playing_batsmen()
 on_strike = 0
 balls_remaining = 24
 wickets_remaining = 3
 runs_scored = 0
-
-def random_weighted(weighted)
-  max    = sum_of_weights(weighted)
-  target = rand(1..max)
-  weighted.each do |item, weight|
-    return item if target <= weight
-    target -= weight
-  end
-end
-
-def sum_of_weights(weighted)
-  weighted.inject(0) { |sum, (item, weight)| sum + weight }
-end
 
 def change_strike
   on_strike = (on_strike.to_i + 1) % 2
@@ -40,8 +34,11 @@ end
   # puts playing_batsmen[on_strike]
   batsman =batsman1
   # puts 'this' + batsman.to_s
-  result = random_weighted(batsman.get_probability())
-  if(result == 7)
+  result = random_generator.random_weighted(batsman.get_probability())
+
+  if(result == 'out')
+    playing_batsmen[on_strike].is_out = true;
+    playing_batsmen[on_strike].add_runs(0)
     playing_batsmen.delete_at(on_strike)
     playing_batsmen.insert(on_strike,batsmen[next_bastman])
     next_bastman += 1
