@@ -12,8 +12,8 @@ batsman2 = Batsman.new('NS Nodhi', Probability.new(10, 40, 20, 5, 10, 1, 4, 10))
 batsman3 = Batsman.new('R Rumrah', Probability.new(20, 30, 15, 5, 5, 1, 4, 20))
 batsman4 = Batsman.new('Shashi Henra', Probability.new(30, 25, 10, 0, 5, 1, 4, 30))
 
-
-scorecard.batsmen_order([batsman1, batsman2, batsman3, batsman4].each)
+batsmen = [batsman1, batsman2, batsman3, batsman4]
+scorecard.batsmen_order(batsmen.each)
 playing_batsmen = scorecard.get_playing_batsmen()
 on_strike = 0
 balls_remaining = 24
@@ -39,11 +39,9 @@ end
   if(result == 'out')
     playing_batsmen[on_strike].is_out = true;
     playing_batsmen[on_strike].add_runs(0)
-    playing_batsmen.delete_at(on_strike)
-    playing_batsmen.insert(on_strike,batsmen[next_bastman])
-    next_bastman += 1
-    wickets_remaining -= 1
-    break if wickets_remaining == 0
+    scorecard.next_batsman()
+    break if scorecard.get_wickets == 0
+
   elsif(result == 1 || result == 3 || result == 5)
     playing_batsmen[on_strike].add_runs(result)
     runs_scored += result

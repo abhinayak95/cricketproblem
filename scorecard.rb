@@ -21,9 +21,15 @@ class Scorecard
   end
 
   def next_batsman()
-    wickets_remaining -= 1
-    @playing_batsmen.delete_at(on_strike)
-    @playing_batsmen.insert(on_strike,batsmen[next_bastman])
+    @wickets_remaining -= 1
+    if @playing_batsmen[0].is_out == true
+      @playing_batsmen.delete_at(0)
+      @playing_batsmen.insert(0, @batsmen_order.next)
+    else
+      @playing_batsmen.delete_at(1)
+      @playing_batsmen.insert(1, @batsmen_order.next)
+
+    end
   end
 
   def get_wickets
@@ -35,7 +41,7 @@ class Scorecard
   end
 
   def get_playing_batsmen()
-    @playing_batsmen = [batsmen_order.next, batsmen_order.next]
+    @playing_batsmen = [@batsmen_order.next, @batsmen_order.next]
     return @playing_batsmen
   end
 
