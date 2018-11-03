@@ -16,8 +16,6 @@ batsmen = [batsman1, batsman2, batsman3, batsman4]
 scorecard.batsmen_order(batsmen.each)
 playing_batsmen = scorecard.get_playing_batsmen()
 on_strike = 0
-balls_remaining = 24
-wickets_remaining = 3
 runs_scored = 0
 
 def change_strike
@@ -26,7 +24,7 @@ def change_strike
 end
 
 24.times do |i|
-  balls_remaining -= 1
+  scorecard.balls_remaining -= 1
   if i % 6 == 0
     change_strike()
   end
@@ -40,7 +38,7 @@ end
     playing_batsmen[on_strike].is_out = true;
     playing_batsmen[on_strike].add_runs(0)
     scorecard.next_batsman()
-    break if scorecard.get_wickets == 0
+    break if scorecard.get_remaining_wickets == 0
 
   elsif(result == 1 || result == 3 || result == 5)
     playing_batsmen[on_strike].add_runs(result)
@@ -55,7 +53,7 @@ end
 end
 
 if runs_scored - 40 >= 0
-  puts "India won by #{wickets_remaining} wickets and #{balls_remaining} balls remaining"
+  puts "India won by #{scorecard.get_remaining_wickets()} wickets and #{scorecard.get_remaining_balls()} balls remaining"
 else
   puts "India lost by #{40 - runs_scored} runs"
 end

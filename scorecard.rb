@@ -32,7 +32,7 @@ class Scorecard
     end
   end
 
-  def get_wickets
+  def get_remaining_wickets
     return @wickets_remaining
   end
 
@@ -43,6 +43,10 @@ class Scorecard
   def get_playing_batsmen()
     @playing_batsmen = [@batsmen_order.next, @batsmen_order.next]
     return @playing_batsmen
+  end
+
+  def get_remaining_balls
+    return @balls_remaining
   end
 
   # def set_playing_batsmen()
