@@ -4,6 +4,8 @@ require_relative "scorecard.rb"
 require_relative "weighted_random_generator.rb"
 
 
+scorecard = Scorecard.new(24, 40, 3)
+
 random_generator = RandomGenerator.new()
 
 batsman1 = Batsman.new('Kirat Boli', Probability.new(5, 30, 25, 10, 15, 1, 9, 5))
@@ -13,7 +15,6 @@ batsman4 = Batsman.new('Shashi Henra', Probability.new(30, 25, 10, 0, 5, 1, 4, 3
 
 scorecard.batsmen_batting_order([batsman1, batsman2, batsman3, batsman4])
 
-scorecard = Scorecard.new(24, 40, 3)
 
 scorecard.balls_remaining().times do |i|
   scorecard.balls_remaining -= 1

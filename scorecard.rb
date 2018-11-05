@@ -37,12 +37,7 @@ class Scorecard
   def batsmen_batting_order(batsmen_batting_order)
     @batsmen_batting_order = batsmen_batting_order.each()
     @batsmen_scorecard = batsmen_batting_order.each()
-    @playing_batsmen = self.get_playing_batsmen()
-  end
-
-  def get_playing_batsmen()
     @playing_batsmen = [@batsmen_batting_order.next, @batsmen_batting_order.next]
-    return @playing_batsmen
   end
 
   def get_remaining_balls
