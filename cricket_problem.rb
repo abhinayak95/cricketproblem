@@ -3,7 +3,6 @@ require_relative "probability.rb"
 require_relative "scorecard.rb"
 require_relative "weighted_random_generator.rb"
 
-scorecard = Scorecard.new(24, 40, 3)
 
 random_generator = RandomGenerator.new()
 
@@ -14,15 +13,15 @@ batsman4 = Batsman.new('Shashi Henra', Probability.new(30, 25, 10, 0, 5, 1, 4, 3
 
 scorecard.batsmen_batting_order([batsman1, batsman2, batsman3, batsman4])
 
-24.times do |i|
+scorecard = Scorecard.new(24, 40, 3)
+
+scorecard.balls_remaining().times do |i|
   scorecard.balls_remaining -= 1
   if i % 6 == 0
     scorecard.change_strike()
   end
 
-  batsman =batsman1
-
-  result = random_generator.random_weighted(batsman.get_probability())
+  result = random_generator.random_weighted(scorecard.batsman_on_strike().get_probability())
 
   if(result == 'out')
     scorecard.batsman_on_strike().is_out = true;

@@ -18,6 +18,10 @@ class Scorecard
     return @runs_scored
   end
 
+  def get_remaining_wickets
+    return @wickets_remaining
+  end
+
   def next_batsman()
     @wickets_remaining -= 1
     self.batsman_on_strike().is_out = true
@@ -29,9 +33,6 @@ class Scorecard
     end
   end
 
-  def get_remaining_wickets
-    return @wickets_remaining
-  end
 
   def batsmen_batting_order(batsmen_batting_order)
     @batsmen_batting_order = batsmen_batting_order.each()
