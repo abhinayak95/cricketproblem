@@ -24,11 +24,16 @@ class Scorecard
     @wickets_remaining -= 1
     if @playing_batsmen[0].is_out == true
       @playing_batsmen.delete_at(0)
-      @playing_batsmen.insert(0, @batsmen_order.next)
+      begin
+        @playing_batsmen.insert(0, @batsmen_order.next)
+      rescue StopIteration
+      end
     else
       @playing_batsmen.delete_at(1)
-      @playing_batsmen.insert(1, @batsmen_order.next)
-
+      begin
+        @playing_batsmen.insert(0, @batsmen_order.next)
+      rescue StopIteration
+      end
     end
   end
 
