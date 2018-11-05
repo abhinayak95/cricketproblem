@@ -12,52 +12,37 @@ batsman2 = Batsman.new('NS Nodhi', Probability.new(10, 40, 20, 5, 10, 1, 4, 10))
 batsman3 = Batsman.new('R Rumrah', Probability.new(20, 30, 15, 5, 5, 1, 4, 20))
 batsman4 = Batsman.new('Shashi Henra', Probability.new(30, 25, 10, 0, 5, 1, 4, 30))
 
-batsmen = [batsman1, batsman2, batsman3, batsman4]
-scorecard.batsmen_order(batsmen.each)
-playing_batsmen = scorecard.get_playing_batsmen()
-on_strike = 0
-runs_scored = 0
-
-def change_strike
-  on_strike = (on_strike.to_i + 1) % 2
-  # puts on_strike
-end
+scorecard.batsmen_batting_order([batsman1, batsman2, batsman3, batsman4])
 
 24.times do |i|
   scorecard.balls_remaining -= 1
   if i % 6 == 0
-    change_strike()
+    scorecard.change_strike()
   end
-  # random generator
-  # puts playing_batsmen[on_strike]
+
   batsman =batsman1
-  # puts 'this' + batsman.to_s
+
   result = random_generator.random_weighted(batsman.get_probability())
 
   if(result == 'out')
-    playing_batsmen[on_strike].is_out = true;
-    playing_batsmen[on_strike].add_runs(0)
+    scorecard.batsman_on_strike().is_out = true;
+    scorecard.batsman_on_strike().add_runs(0)
     scorecard.next_batsman()
     break if scorecard.get_remaining_wickets == 0
-
-  elsif(result == 1 || result == 3 || result == 5)
-    playing_batsmen[on_strike].add_runs(result)
-    runs_scored += result
-    change_strike()
-    break if runs_scored >= 40
   else
-    playing_batsmen[on_strike].add_runs(result)
-    runs_scored += result
-    break if runs_scored >= 40
+    scorecard.batsman_on_strike.add_runs(result)
+    scorecard.increase_score(result)
+    break if scorecard.get_runs_scored() >= 40
+    if(result == 1 || result == 3 || result == 5)
+      scorecard.change_strike()
+    end
   end
 end
 
-if runs_scored - 40 >= 0
+if scorecard.get_runs_scored() - 40 >= 0
   puts "India won by #{scorecard.get_remaining_wickets()} wickets and #{scorecard.get_remaining_balls()} balls remaining"
 else
-  puts "India lost by #{40 - runs_scored} runs"
+  puts "India lost by #{40 - scorecard.get_runs_scored()} runs"
 end
-batsmen.each{
-  |batsman|
-  puts batsman.name + ' ' + batsman.get_scorecard()
-}
+
+scorecard.get_scorecard()

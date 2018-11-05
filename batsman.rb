@@ -20,9 +20,9 @@ class Batsman
   end
   def get_scorecard
     if @is_out || @balls_faced == 0
-      return "#{runs} (#{balls_faced} balls)"
+      return "#{name} #{runs} (#{balls_faced} balls)"
     else
-      return "#{runs}* (#{balls_faced} balls)"
+      return "#{name} #{runs}* (#{balls_faced} balls)"
     end
   end
 end
